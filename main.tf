@@ -3,19 +3,19 @@ resource "aws_vpc" "my_vpc" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name   = "MyVPC"
+    Name = "MyVPC"
     Source = var.sources
   }
 }
 
 # 2. Create a Subnet inside the VPC
 resource "aws_subnet" "my_subnet" {
-  vpc_id                  = aws_vpc.my_vpc.id
-  cidr_block              = "10.0.1.0/24"
-  map_public_ip_on_launch = true
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.1.0/24"
+  map_public_ip_on_launch = true 
 
   tags = {
-    Name   = "MySubnet"
+    Name = "MySubnet"
     Source = var.sources
   }
 }
@@ -25,7 +25,7 @@ resource "aws_internet_gateway" "my_igw" {
   vpc_id = aws_vpc.my_vpc.id
 
   tags = {
-    Name   = "MyIGW"
+    Name = "MyIGW"
     Source = var.sources
   }
 }
@@ -40,7 +40,7 @@ resource "aws_route_table" "my_route_table" {
   }
 
   tags = {
-    Name   = "MyRouteTable"
+    Name = "MyRouteTable"
     Source = var.sources
   }
 }
@@ -59,43 +59,43 @@ resource "aws_security_group" "my_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Allow SSH from anywhere (change for security)
+    cidr_blocks = ["0.0.0.0/0"]  # Allow SSH from anywhere (change for security)
   }
-
+  
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Allow HTTP from anywhere (change for security)
+    cidr_blocks = ["0.0.0.0/0"]  # Allow HTTP from anywhere (change for security)
   }
 
   tags = {
-    Name   = "MySecurityGroup"
+    Name = "MySecurityGroup"
     Source = var.sources
   }
 }
 
 # 7. Create two EC2 Instance inside the VPC
-resource "aws_instance" "my_instance" {
-  ami             = "ami-0c614dee691cbbf37" # Change this AMI ID based on your region
-  instance_type   = "t2.2xlarge"
-  subnet_id       = aws_subnet.my_subnet.id
-  security_groups = [aws_security_group.my_sg.name]
+resource "aws_instance" "my_instance1" {
+  ami           = "ami-0c614dee691cbbf37"  # Change this AMI ID based on your region
+  instance_type = "t2.2xlarge"
+  subnet_id     = aws_subnet.my_subnet.id
+  vpc_security_group_ids = [aws_security_group.my_sg.id]
 
   tags = {
-    Name   = "MyEC2Instance1"
+    Name = "MyEC2Instance1"
     Source = var.sources
   }
 }
 
-resource "aws_instance" "my_instance1" {
-  ami             = "ami-0c614dee691cbbf37" # Change this AMI ID based on your region
-  instance_type   = "t2.2xlarge"
-  subnet_id       = aws_subnet.my_subnet.id
-  security_groups = [aws_security_group.my_sg.name]
+resource "aws_instance" "my_instance2" {
+  ami           = "ami-0c614dee691cbbf37"  # Change this AMI ID based on your region
+  instance_type = "t2.2xlarge"
+  subnet_id     = aws_subnet.my_subnet.id
+  vpc_security_group_ids = [aws_security_group.my_sg.id]
 
   tags = {
-    Name   = "MyEC2Instance2"
+    Name = "MyEC2Instance2"
     Source = var.sources
   }
 }
