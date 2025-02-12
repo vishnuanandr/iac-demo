@@ -11,7 +11,7 @@ resource "aws_vpc" "my_vpc" {
 # Create Two Subnets in Different Availability Zones (Required for ALB)
 resource "aws_subnet" "my_subnet1" {
   vpc_id                  = aws_vpc.my_vpc.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = "10.0.3.0/24"
   map_public_ip_on_launch = true
   availability_zone       = "us-east-1a"  # Change to your region's AZ
 
@@ -23,7 +23,7 @@ resource "aws_subnet" "my_subnet1" {
 
 resource "aws_subnet" "my_subnet2" {
   vpc_id                  = aws_vpc.my_vpc.id
-  cidr_block              = "10.0.2.0/24"
+  cidr_block              = "10.0.4.0/24"
   map_public_ip_on_launch = true
   availability_zone       = "us-east-1b"  # Change to another AZ
 
