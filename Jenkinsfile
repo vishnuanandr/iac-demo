@@ -26,7 +26,7 @@ pipeline{
         stage('Terraform Apply'){
             steps{
                 ansiColor('xterm'){
-                sh 'terraform apply --auto-approve'
+                sh 'terraform destroy --auto-approve'
                 }
             }
         }
