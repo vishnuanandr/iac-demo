@@ -6,7 +6,7 @@ pipeline{
     stages{
         stage('Git Checkout'){
             steps{
-                git branch: 'main', credentialsId: 'GitHub', url: 'https://github.com/vishnuanandr/iac-demo'
+                git branch: 'main', credentialsId: 'GitHub_PAT', url: 'https://github.com/vishnuanandr/iac-demo.git'
             }
         }
         stage('Terraform Init'){
