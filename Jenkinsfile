@@ -55,7 +55,7 @@ pipeline {
             steps {
                 script {
                     dir("terraform") {
-                        sh 'terraform apply -input=false tfplan'
+                        sh 'terraform destroy -input=false tfplan'
                     }
                 }
             }
