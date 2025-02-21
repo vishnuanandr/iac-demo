@@ -9,14 +9,16 @@ pipeline {
         terraform 'terraform-11'
     }
 
+    options {
+        ansiColor('xterm')
+    }
+
     stages {
         stage('Checkout') {
             steps {
                 script {
-                    wrap([$class: 'AnsiColor', 'colorMapName': 'xterm']) {
-                        dir("terraform") {
-                            git branch: 'main', credentialsId: 'GitHub_PAT', url: 'https://github.com/vishnuanandr/iac-demo.git'
-                        }
+                    dir("terraform") {
+                        git branch: 'main', credentialsId: 'GitHub_PAT', url: 'https://github.com/vishnuanandr/iac-demo.git'
                     }
                 }
             }
@@ -25,12 +27,10 @@ pipeline {
         stage('Plan') {
             steps {
                 script {
-                    wrap([$class: 'AnsiColor', 'colorMapName': 'xterm']) {
-                        dir("terraform") {
-                            sh 'terraform init'
-                            sh 'terraform plan -out=tfplan'
-                            sh 'terraform show -no-color tfplan > tfplan.txt'
-                        }
+                    dir("terraform") {
+                        sh 'terraform init'
+                        sh 'terraform plan -out=tfplan'
+                        sh 'terraform show -no-color tfplan > tfplan.txt'
                     }
                 }
             }
@@ -44,11 +44,9 @@ pipeline {
             }
             steps {
                 script {
-                    wrap([$class: 'AnsiColor', 'colorMapName': 'xterm']) {
-                        def plan = readFile 'terraform/tfplan.txt'
-                        input message: "Do you want to apply the plan?",
-                        parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-                    }
+                    def plan = readFile 'terraform/tfplan.txt'
+                    input message: "Do you want to apply the plan?",
+                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                 }
             }
         }
@@ -56,10 +54,8 @@ pipeline {
         stage('Apply') {
             steps {
                 script {
-                    wrap([$class: 'AnsiColor', 'colorMapName': 'xterm']) {
-                        dir("terraform") {
-                            sh 'terraform apply -input=false tfplan'
-                        }
+                    dir("terraform") {
+                        sh 'terraform apply -input=false tfplan'
                     }
                 }
             }
